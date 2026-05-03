@@ -10,8 +10,9 @@ def login():
     clear_screen()
     global current_user
 
-    email = input("Email: ")
-    password = input("Password: ")
+    print("Log in:")
+    email = input(" Email: ")
+    password = input("  Password: ")
 
     user = ms.check_data(email, password)
 
