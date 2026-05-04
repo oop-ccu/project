@@ -1,4 +1,6 @@
-預計系統架構
+預計系統架構：
+
+```text
 smart_store_system/
 │
 ├── ui/
