@@ -1,4 +1,5 @@
-FILE_NAME1 = 'member_data.txt'
+FILE_NAME1 = 'member_data.json'
+import json
 
 class member:
     def __init__(self, name,email ,password, age, gender, coupon, point, total_spending):
@@ -51,8 +52,17 @@ class member:
         save_members(members)
         print("Password changed successfully!")
 
-    def to_string(self):
-        return f"{self.member_name},{self.member_email},{self.member_password},{self.member_age},{self.member_gender},{self.member_coupon},{self.member_point},{self.member_total_spending}"
+    def to_dict(self):
+        return {
+            "name": self.member_name,
+            "email": self.member_email,
+            "password": self.member_password,
+            "age": self.member_age,
+            "gender": self.member_gender,
+            "coupon": self.member_coupon,
+            "point": self.member_point,
+            "total_spending": self.member_total_spending,
+        }
 
 def create_member():
     print("Create Member:")
@@ -83,23 +93,31 @@ def create_member():
 def load_members():
     members = []
     try:
-        with open(FILE_NAME1, "r") as file:
-            for line in file:
-                data = line.strip().split(",")
-                if len(data) == 8:
-                    name, email, password, age, gender, coupon, point, total_spending = data
-                    members.append(
-                        member(name, email, password, int(age), gender, int(coupon), int(point), int(total_spending))
+        with open(FILE_NAME1, "r", encoding="utf-8") as file:
+            data = json.load(file)
+            for item in data:
+                members.append(
+                    member(
+                        item["name"],
+                        item["email"],
+                        item["password"],
+                        item["age"],
+                        item["gender"],
+                        item["coupon"],
+                        item["point"],
+                        item["total_spending"],
                     )
+                )
     except FileNotFoundError:
         print("Database file not found.")
+    except json.JSONDecodeError:
+        print("Error decoding JSON file.")
 
     return members
 
 def save_members(members):
-    with open(FILE_NAME1, "w") as file:
-        for m in members:
-            file.write(m.to_string() + "\n")
+    with open(FILE_NAME1, "w", encoding="utf-8") as file:
+        json.dump([m.to_dict() for m in members], file, indent=4, ensure_ascii=False)
 
 def check_data(email, password):
     for m in members:
