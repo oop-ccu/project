@@ -4,11 +4,10 @@ from datetime import datetime
 
 class AccountingSystem:
     def __init__(self):
-        # 設定檔案路徑，配合你們的 README 架構
         self.data_file = os.path.join(os.path.dirname(__file__), 'accounting_data.json')
         self.data = self._load_data()
 
-    # 內部方法：讀取帳本 (前面加底線代表這是內部使用的，別的系統不該直接呼叫)
+    # 讀取帳本
     def _load_data(self):
         if not os.path.exists(self.data_file):
             return {"total_balance": 0.0, "transactions": []}
@@ -18,12 +17,12 @@ class AccountingSystem:
         except json.JSONDecodeError:
             return {"total_balance": 0.0, "transactions": []}
 
-    # 內部方法：存檔
+    # 存檔
     def _save_data(self):
         with open(self.data_file, 'w', encoding='utf-8') as f:
             json.dump(self.data, f, indent=4, ensure_ascii=False)
 
-    # 內部方法：新增交易紀錄
+    # 新增交易紀錄
     def _add_transaction(self, t_type, amount, description):
         transaction = {
             "transaction_id": f"T{len(self.data['transactions']) + 1:04d}",
