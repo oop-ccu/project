@@ -1,10 +1,9 @@
 import os
 
-# 因為都在同一個資料夾，直接 import 檔名就好！超簡單！
 from accounting_system import AccountingSystem
 import salary_system as ss
 
-# 初始化你的會計系統
+# 初始化會計系統
 accounting = AccountingSystem()
 
 def clear_screen():
