@@ -58,13 +58,32 @@ class AccountingSystem:
     def get_transaction_history(self):
         """獲取所有交易明細"""
         return self.data["transactions"]
-
-    # 配合 CheckoutSystem 的轉接 API ---
-    def add_transaction(self, transaction_record):
-        """接收來自結帳系統的整筆訂單紀錄"""
-        amount = transaction_record.get("total_amount", 0)
-        # 把結帳系統丟過來的整包資料，轉換成可以接受的格式
-        description = f"結帳收入 (包含 {len(transaction_record.get('items', []))} 項商品)"
         
-        # 呼叫收入櫃台
-        self.record_revenue(amount, description)
+# --- 開放給 checkout_system (結帳大廳經理) 呼叫的進階 API ---
+    def add_transaction(self, transaction_record):
+        """
+        接收來自結帳系統的整筆訂單紀錄，並完整保存所有明細。
+        """
+        # 1. 抓出結帳總金額
+        amount = transaction_record.get("total_amount", 0)
+        
+        # 2. 建立一筆進階的交易紀錄，融合會計系統的流水號與結帳系統的完整資料
+        new_transaction = {
+            "transaction_id": f"T{len(self.data['transactions']) + 1:04d}",
+            "type": "revenue",  # 結帳傳來的一定是收入
+            "amount": amount,
+            
+            # 直接使用結帳系統傳來的時間，如果沒有才用現在時間
+            "date": transaction_record.get("timestamp", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+            
+            # 【關鍵】完整保留他們傳過來的商品清單與會員ID！
+            "items": transaction_record.get("items", []), 
+            "member_id": transaction_record.get("member_id", None)
+        }
+
+        # 3. 存入帳本並更新總餘額
+        self.data["transactions"].append(new_transaction)
+        self.data["total_balance"] += amount
+        self._save_data()
+        
+        return True
