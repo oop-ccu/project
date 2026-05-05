@@ -14,7 +14,7 @@ class Salary:
         self.deductions = deductions
 
     def calculate_net_salary(self):
-        # 簡單的薪水計算邏輯：底薪 + 獎金 - 扣薪
+        #底薪 + 獎金 - 扣薪
         return self.base_salary + self.bonus - self.deductions
 
     def checkinfo(self):
@@ -49,7 +49,7 @@ class Salary:
             print("Invalid input. Please enter a number.")
 
     def to_dict(self):
-        # 將物件轉換為字典，方便存成 JSON
+        # 轉換為字典，方便存 JSON
         return {
             "worker_id": self.worker_id,
             "worker_name": self.worker_name,
@@ -113,8 +113,7 @@ def load_salaries():
 
     return salaries
 
-def save_salaries(salaries):
-    # 確保目錄存在
+def save_salaries(salaries):
     os.makedirs(os.path.dirname(FILE_NAME), exist_ok=True)
     
     data_to_save = [s.to_dict() for s in salaries]
@@ -127,5 +126,5 @@ def check_salary_data(worker_id):
             return s
     return None
 
-# 初始化載入資料
+# 初始化
 salary_list = load_salaries()
