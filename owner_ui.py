@@ -1,10 +1,7 @@
 import os
-
-# 幫兩個系統都取好簡短的綽號
 import accounting_system as acc
 import salary_system as ss
 
-# 透過綽號來呼叫並初始化你的會計系統
 accounting = acc.AccountingSystem()
 
 def clear_screen():
