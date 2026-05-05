@@ -1,12 +1,10 @@
-import sys
 import os
 
+# 因為都在同一個資料夾，直接 import 檔名就好！超簡單！
+from accounting_system import AccountingSystem
+import salary_system as ss
 
-# 匯入老闆會用到的系統
-from systems.accounting_system.accounting_system import AccountingSystem
-from systems.salary_system import salary_system as ss
-
-# 初始化會計系統！
+# 初始化你的會計系統
 accounting = AccountingSystem()
 
 def clear_screen():
@@ -21,7 +19,6 @@ def login():
     username = input(" Username: ")
     password = input(" Password: ")
 
-    # 老闆帳號通常是最高權限，先設定簡單的預設帳密 admin/admin
     if username == "admin" and password == "admin":
         is_logged_in = True
         print("Login successful. Welcome, Boss!")
@@ -38,7 +35,6 @@ def logout():
     input("\nPress Enter to continue...")
 
 def view_revenue():
-    """查看店鋪總營收 (呼叫會計系統)"""
     clear_screen()
     print("=== Store Revenue ===")
     balance = accounting.get_balance()
@@ -46,7 +42,6 @@ def view_revenue():
     input("\nPress Enter to continue...")
 
 def view_transaction_history():
-    """查看所有交易明細 (呼叫會計系統)"""
     clear_screen()
     print("=== Transaction History ===")
     history = accounting.get_transaction_history()
@@ -58,7 +53,6 @@ def view_transaction_history():
     input("\nPress Enter to continue...")
 
 def manage_salaries():
-    """查看員工薪水 (呼叫薪水系統)"""
     clear_screen()
     print("=== Manage Salaries ===")
     print("1. View Worker Salary Profile")
@@ -67,7 +61,6 @@ def manage_salaries():
     choice = input("Choose: ")
     if choice == "1":
         worker_id = input("Enter Worker ID (e.g., W001): ")
-        # 呼叫 salary_system 的功能
         worker = ss.check_salary_data(worker_id) 
         if worker:
             worker.checkinfo()
