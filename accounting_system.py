@@ -70,7 +70,7 @@ class AccountingSystem:
         # 2. 建立一筆進階的交易紀錄，融合會計系統的流水號與結帳系統的完整資料
         new_transaction = {
             "transaction_id": f"T{len(self.data['transactions']) + 1:04d}",
-            "type": "revenue",  # 結帳傳來的一定是收入
+            "type": "checkout revenue",  # 結帳傳來的一定是收入
             "amount": amount,
             
             # 直接使用結帳系統傳來的時間，如果沒有才用現在時間
