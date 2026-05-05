@@ -1,8 +1,6 @@
 import sys
 import os
 
-# 【重要】把專案根目錄加入路徑，這樣 Python 才找得到 systems 資料夾
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # 匯入老闆會用到的系統
 from systems.accounting_system.accounting_system import AccountingSystem
