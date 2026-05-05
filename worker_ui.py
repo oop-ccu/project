@@ -1,15 +1,14 @@
 import os
 import sys
 
-# 為了確保能順利 import systems 裡面的模組，設定一下路徑
-# 假設執行位置在專案根目錄，或是直接把路徑指向上層
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# 匯入薪資系統當作物件跟函式庫使用 (依照組長指示)
+# 匯入薪資系統當作物件跟函式庫使用 
 import systems.salary_system.salary_system as ss
 
 def clear_screen():
-    os.system("cls" if os.name == "nt" else "clear") # 增加相容性，讓 Mac/Linux 也能清空螢幕
+    os.system("cls" if os.name == "nt" else "clear") # 增加相容性
 
 current_worker = None   # 記錄目前登入的工作人員
 
@@ -18,7 +17,7 @@ def login():
     global current_worker
 
     print("=== Worker Log In ===")
-    # 這裡先簡化，使用 worker_id 作為登入憑證 (因為 salary_data 裡目前只有 ID)
+    # 使用 worker_id 作為登入憑證 
     worker_id = input("  Worker ID: ")
 
     # 呼叫底層系統檢查資料
@@ -57,11 +56,11 @@ def worker_menu():
         clear_screen()
 
         if choice == "1":
-            # 呼叫物件的方法
+           
             current_worker.checkinfo()
             input("\nPress Enter to continue...")
         elif choice == "2":
-            # 呼叫物件的方法更新工時
+            
             current_worker.update_hours()
             input("\nPress Enter to continue...")
         elif choice == "3":
