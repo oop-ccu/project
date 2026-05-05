@@ -58,3 +58,13 @@ class AccountingSystem:
     def get_transaction_history(self):
         """獲取所有交易明細"""
         return self.data["transactions"]
+
+    # 配合 CheckoutSystem 的轉接 API ---
+    def add_transaction(self, transaction_record):
+        """接收來自結帳系統的整筆訂單紀錄"""
+        amount = transaction_record.get("total_amount", 0)
+        # 把結帳系統丟過來的整包資料，轉換成可以接受的格式
+        description = f"結帳收入 (包含 {len(transaction_record.get('items', []))} 項商品)"
+        
+        # 呼叫收入櫃台
+        self.record_revenue(amount, description)
