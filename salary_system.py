@@ -1,7 +1,7 @@
 import json
 import os
 
-FILE_NAME = 'salary_system/salary_data.json'
+FILE_NAME = os.path.join(os.path.dirname(__file__), 'salary_data.json')
 
 class Salary:
     def __init__(self, worker_id, name, role, base_salary, hours_worked, bonus, deductions):
