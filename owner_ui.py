@@ -52,18 +52,47 @@ def view_transaction_history():
 def manage_salaries():
     clear_screen()
     print("=== Manage Salaries ===")
-    print("1. View Worker Salary Profile")
-    print("2. Return to Main Menu")
+    worker_id = input("Enter Worker ID (e.g., W001): ")
+    worker = ss.check_salary_data(worker_id) 
     
-    choice = input("Choose: ")
-    if choice == "1":
-        worker_id = input("Enter Worker ID (e.g., W001): ")
-        worker = ss.check_salary_data(worker_id) 
-        if worker:
-            worker.checkinfo()
-        else:
-            print("Worker not found.")
+    if not worker:
+        print("Worker not found.")
         input("\nPress Enter to continue...")
+        return
+
+    # 找到員工後，給老闆進階選項
+    while True:
+        clear_screen()
+        print(f"--- Managing Worker: {worker.worker_name} ({worker.worker_role}) ---")
+        print("1. View Worker Salary Profile (查看薪資明細)")
+        print("2. Pay Salary (發放薪資並記帳)")
+        print("3. Return to Main Menu (返回主選單)")
+        
+        choice = input("Choose: ")
+        
+        if choice == "1":
+            print("\n")
+            worker.checkinfo()
+            input("\nPress Enter to continue...")
+        
+        elif choice == "2":
+            net_salary = worker.calculate_net_salary()
+            if net_salary <= 0:
+                print("此員工目前不需發放薪資 (或扣款大於薪水)。")
+            else:
+                # 呼叫會計系統支出 API
+                description = f"Personnel Cost - Paid salary to {worker.worker_name} ({worker_id})"
+                accounting.record_expense(net_salary, description)
+                print(f"\n成功發放薪資 ${net_salary} 給 {worker.worker_name}！")
+                print("系統已自動從會計帳本中扣除該筆款項。")
+            
+            input("\nPress Enter to continue...")
+            
+        elif choice == "3":
+            break
+        else:
+            print("Invalid choice")
+            input("\nPress Enter to continue...")
 
 def owner_menu():
     global is_logged_in
