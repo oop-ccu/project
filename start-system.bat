@@ -16,7 +16,7 @@ REM Wait a moment for the API to start
 timeout /t 2 /nobreak
 
 REM Start Web UI in a new terminal
-echo Starting Web UI on http://localhost:5174...
+echo Starting Web UI on http://localhost:5173...
 cd smart-store
 start cmd /k npm run dev
 
@@ -26,7 +26,7 @@ echo     Services Starting...
 echo ================================================
 echo.
 echo API:     http://localhost:5000
-echo Web UI:  http://localhost:5174
+echo Web UI:  http://localhost:5173
 echo.
 echo Press Enter in either terminal window to stop services
 echo ================================================

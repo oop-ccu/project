@@ -14,7 +14,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "python api.py"
 Start-Sleep -Seconds 2
 
 # Start Web UI in a new PowerShell window
-Write-Host "Starting Web UI on http://localhost:5174..." -ForegroundColor Yellow
+Write-Host "Starting Web UI on http://localhost:5173..." -ForegroundColor Yellow
 $webDir = Join-Path $PSScriptRoot "smart-store"
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$webDir'; npm run dev"
 
@@ -22,6 +22,6 @@ Write-Host "`n================================================" -ForegroundColor
 Write-Host "     Services Starting..." -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host "`nAPI:     http://localhost:5000" -ForegroundColor Green
-Write-Host "Web UI:  http://localhost:5174" -ForegroundColor Green
+Write-Host "Web UI:  http://localhost:5173" -ForegroundColor Green
 Write-Host "`nPress Ctrl+C in any terminal window to stop services" -ForegroundColor Yellow
 Write-Host "================================================`n" -ForegroundColor Cyan
