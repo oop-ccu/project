@@ -23,7 +23,8 @@ class AccountingSystem:
             json.dump(self.data, f, indent=4, ensure_ascii=False)
 
     # 新增交易紀錄
-    def _add_transaction(self, t_type, amount, description):
+def _add_transaction(self, t_type, amount, description):
+        self.data = self._load_data() # <--- 加入這行
         transaction = {
             "transaction_id": f"T{len(self.data['transactions']) + 1:04d}",
             "type": t_type,
@@ -51,37 +52,32 @@ class AccountingSystem:
         self._add_transaction("expense", -amount, description)
         return True
 
+# 修改 1：讀取餘額前，先重新載入 JSON 確保是最新資料
     def get_balance(self):
-        """獲取目前總餘額 (例如：老闆 UI 查看時呼叫)"""
+        """獲取目前總餘額"""
+        self.data = self._load_data() 
         return self.data["total_balance"]
 
+# 修改 2：讀取明細前，先重新載入 JSON 確保是最新資料
     def get_transaction_history(self):
         """獲取所有交易明細"""
+        self.data = self._load_data()
         return self.data["transactions"]
         
 # --- 開放給 checkout_system (結帳大廳經理) 呼叫的進階 API ---
-    def add_transaction(self, transaction_record):
-        """
-        接收來自結帳系統的整筆訂單紀錄，並完整保存所有明細。
-        """
-        # 1. 抓出結帳總金額
-        amount = transaction_record.get("total_amount", 0)
+def add_transaction(self, transaction_record):
+        self.data = self._load_data() # <--- 加入這行
         
-        # 2. 建立一筆進階的交易紀錄，融合會計系統的流水號與結帳系統的完整資料
+        amount = transaction_record.get("total_amount", 0)
         new_transaction = {
             "transaction_id": f"T{len(self.data['transactions']) + 1:04d}",
-            "type": "checkout revenue",  # 結帳傳來的一定是收入
+            "type": "checkout revenue",
             "amount": amount,
-            
-            # 直接使用結帳系統傳來的時間，如果沒有才用現在時間
             "date": transaction_record.get("timestamp", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
-            
-            # 【關鍵】完整保留他們傳過來的商品清單與會員ID！
             "items": transaction_record.get("items", []), 
             "member_id": transaction_record.get("member_id", None)
         }
 
-        # 3. 存入帳本並更新總餘額
         self.data["transactions"].append(new_transaction)
         self.data["total_balance"] += amount
         self._save_data()
