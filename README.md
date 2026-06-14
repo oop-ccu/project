@@ -1,5 +1,37 @@
-注意！！！！！！！！！！！！！！
-丟AI前要把裡面的檔案一併丟給AI 不然會導致參數錯誤
+
+
+## 🚀 Quick Start (One Step Startup)
+
+To start both the **API Server** and **Web UI** with a single command:
+
+### Windows Users
+**Option 1 - Batch File (Easiest)**
+```bash
+start-system.bat
+```
+
+**Option 2 - PowerShell**
+```powershell
+.\start-system.ps1
+```
+
+### macOS/Linux Users
+```bash
+python api.py &
+cd smart-store && npm run dev
+```
+
+This will:
+- ✅ Start API Server on `http://localhost:5000`
+- ✅ Start Web UI on `http://localhost:5174`
+- ✅ Data persists to JSON files
+- ✅ Ready for sign in with `victor@gmail.com` / `12345678`
+
+---
+
+## 📋 Manual Setup (If Preferred)
+
+
 
 
 預計系統架構：

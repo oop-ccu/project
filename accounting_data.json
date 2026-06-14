@@ -1,0 +1,66 @@
+{
+    "total_balance": -60665,
+    "transactions": [
+        {
+            "transaction_id": "T0001",
+            "type": "expense",
+            "amount": -20000,
+            "description": "Monthly Store Rent",
+            "date": "2026-04-01 09:00:00"
+        },
+        {
+            "transaction_id": "T0002",
+            "type": "expense",
+            "amount": -3500,
+            "description": "Electricity and Water Bill",
+            "date": "2026-04-01 09:05:00"
+        },
+        {
+            "transaction_id": "T0003",
+            "type": "expense",
+            "amount": -12000,
+            "description": "Store Management Tablet",
+            "date": "2026-04-02 10:00:00"
+        },
+        {
+            "transaction_id": "T0004",
+            "type": "checkout revenue",
+            "amount": 1750,
+            "date": "2026-05-09 14:22:00",
+            "items": [
+                {
+                    "name": "USB-C Adapter",
+                    "qty": 2,
+                    "price": 500
+                },
+                {
+                    "name": "Network Cable",
+                    "qty": 5,
+                    "price": 150
+                }
+            ],
+            "member_id": "M001"
+        },
+        {
+            "transaction_id": "T0005",
+            "type": "checkout revenue",
+            "amount": 4500,
+            "date": "2026-05-09 16:45:00",
+            "items": [
+                {
+                    "name": "High-Speed Router",
+                    "qty": 1,
+                    "price": 4500
+                }
+            ],
+            "member_id": "M002"
+        },
+        {
+            "transaction_id": "T0006",
+            "type": "expense",
+            "amount": -32000,
+            "description": "Personnel Cost - Worker W001 Salary",
+            "date": "2026-05-01 09:00:00"
+        }
+    ]
+}

@@ -1,0 +1,62 @@
+[
+    {
+        "id": "M001",
+        "name": "Alice Chen",
+        "email": "alice@demo.com",
+        "password": "1234",
+        "age": 28,
+        "gender": "Female",
+        "coupon": 2,
+        "point": 150,
+        "total_spending": 1750,
+        "level": "gold"
+    },
+    {
+        "id": "M002",
+        "name": "Bob Wang",
+        "email": "bob@demo.com",
+        "password": "1234",
+        "age": 32,
+        "gender": "Male",
+        "coupon": 0,
+        "point": 45,
+        "total_spending": 4500,
+        "level": "silver"
+    },
+    {
+        "id": "M003",
+        "name": "Carol Liu",
+        "email": "carol@demo.com",
+        "password": "1234",
+        "age": 25,
+        "gender": "Female",
+        "coupon": 5,
+        "point": 820,
+        "total_spending": 12000,
+        "level": "vip"
+    },
+    {
+        "id": "M004",
+        "name": "Jay Wilson",
+        "email": "jay@demo.com",
+        "password": "password123",
+        "age": 26,
+        "gender": "Female",
+        "coupon": 0,
+        "point": 0,
+        "total_spending": 0,
+        "level": "bronze"
+    },
+    {
+        "id": "M005",
+        "name": "victor",
+        "email": "victor@gmail.com",
+        "password": "12345678",
+        "age": 20,
+        "gender": "Male",
+        "coupon": 0,
+        "point": 0,
+        "total_spending": 0,
+        "level": "bronze"
+    }
+]

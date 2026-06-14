@@ -1,0 +1,29 @@
+[
+    {
+        "worker_id": "W001",
+        "worker_name": "David Lin",
+        "worker_role": "Cashier",
+        "base_salary": 32000,
+        "hours_worked": 160,
+        "bonus": 2000,
+        "deductions": 0
+    },
+    {
+        "worker_id": "W002",
+        "worker_name": "Emma Huang",
+        "worker_role": "Manager",
+        "base_salary": 45000,
+        "hours_worked": 176,
+        "bonus": 5000,
+        "deductions": 0
+    },
+    {
+        "worker_id": "W003",
+        "worker_name": "Frank Wu",
+        "worker_role": "Stock Staff",
+        "base_salary": 28000,
+        "hours_worked": 144,
+        "bonus": 0,
+        "deductions": 500
+    }
+]

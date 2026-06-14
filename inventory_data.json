@@ -1,0 +1,98 @@
+[
+    {
+        "id": "P001",
+        "name": "USB-C Adapter",
+        "price": 500,
+        "stock": 20,
+        "category": "Electronics",
+        "date": "2026-01-15"
+    },
+    {
+        "id": "P002",
+        "name": "Network Cable 5m",
+        "price": 150,
+        "stock": 50,
+        "category": "Network",
+        "date": "2026-01-20"
+    },
+    {
+        "id": "P003",
+        "name": "High-Speed Router",
+        "price": 4500,
+        "stock": 5,
+        "category": "Network",
+        "date": "2026-02-01"
+    },
+    {
+        "id": "P004",
+        "name": "Mechanical Keyboard",
+        "price": 2800,
+        "stock": 12,
+        "category": "Peripherals",
+        "date": "2026-02-05"
+    },
+    {
+        "id": "P005",
+        "name": "Ergonomic Mouse",
+        "price": 1200,
+        "stock": 18,
+        "category": "Peripherals",
+        "date": "2026-02-10"
+    },
+    {
+        "id": "P006",
+        "name": "Monitor Stand",
+        "price": 890,
+        "stock": 8,
+        "category": "Accessories",
+        "date": "2026-02-15"
+    },
+    {
+        "id": "P007",
+        "name": "256GB SSD",
+        "price": 1600,
+        "stock": 25,
+        "category": "Storage",
+        "date": "2026-03-01"
+    },
+    {
+        "id": "P008",
+        "name": "Laptop Sleeve 15\"",
+        "price": 650,
+        "stock": 30,
+        "category": "Bags",
+        "date": "2026-03-05"
+    },
+    {
+        "id": "P009",
+        "name": "USB Hub 7-Port",
+        "price": 780,
+        "stock": 15,
+        "category": "Electronics",
+        "date": "2026-03-10"
+    },
+    {
+        "id": "P010",
+        "name": "Webcam 1080p",
+        "price": 1350,
+        "stock": 10,
+        "category": "Electronics",
+        "date": "2026-03-15"
+    },
+    {
+        "id": "P011",
+        "name": "Cable Organizer Kit",
+        "price": 320,
+        "stock": 40,
+        "category": "Accessories",
+        "date": "2026-03-20"
+    },
+    {
+        "id": "P012",
+        "name": "Power Strip 6-Outlet",
+        "price": 560,
+        "stock": 22,
+        "category": "Office",
+        "date": "2026-03-25"
+    }
+]
