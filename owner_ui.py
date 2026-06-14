@@ -75,16 +75,23 @@ def manage_salaries():
             worker.checkinfo()
             input("\nPress Enter to continue...")
         
-        elif choice == "2":
+elif choice == "2":
             net_salary = worker.calculate_net_salary()
             if net_salary <= 0:
                 print("此員工目前不需發放薪資 (或扣款大於薪水)。")
             else:
-                # 呼叫會計系統支出 API
+                # 1. 呼叫會計系統支出 API
                 description = f"Personnel Cost - Paid salary to {worker.worker_name} ({worker_id})"
                 accounting.record_expense(net_salary, description)
+                
+                # 2. 【修復 Bug】發薪後將時數、獎金與扣除額歸零，並更新薪資資料庫
+                worker.hours_worked = 0.0
+                worker.bonus = 0.0
+                worker.deductions = 0.0
+                ss.save_salaries(ss.salary_list) # 儲存回 JSON
+                
                 print(f"\n成功發放薪資 ${net_salary} 給 {worker.worker_name}！")
-                print("系統已自動從會計帳本中扣除該筆款項。")
+                print("系統已自動從會計帳本中扣除該筆款項，並重置該員工的本月工時。")
             
             input("\nPress Enter to continue...")
             
