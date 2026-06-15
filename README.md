@@ -32,28 +32,6 @@ This will:
 
 ---
 
-
-Here is the comprehensive English version of the User Manual for your GitHub repository. It is professionally structured and highlights all the core functionalities and the robust software engineering designs (like data consistency) you implemented.
-
----
-
-# 📖 Smart Store System - User Manual
-
-Welcome to the Smart Store System! This system features both a modern graphical Web User Interface (Web UI) and a Command Line Interface (CLI), providing dedicated interactive environments for three distinct roles: Customer, Worker, and Owner.
-
-## 🚀 1. Quick Start (System Startup)
-
-The system supports a "One-Step Startup" feature that simultaneously launches the Python API backend and the React Web UI, ensuring real-time data synchronization and persistent storage.
-
-**Windows Startup Guide:**
-
-1. Open the `project-main` directory.
-2. Double-click the `start-system.bat` file to execute it.
-3. The system will automatically open two terminal windows (Please do not close them, as they run the local server).
-4. Open your web browser and navigate to `http://localhost:5173` to start using the Web UI.
-
----
-
 ## 🛍️ 2. Customer Portal
 
 The Customer Portal is designed for general consumers, providing features for browsing products, managing the shopping cart, and accessing the member profile.
