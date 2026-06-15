@@ -1,6 +1,6 @@
 
 
-📖 Smart Store System - User Manual
+## 📖 Smart Store System - User Manual
 Welcome to the Smart Store System! This system features both a modern graphical Web User Interface (Web UI) and a Command Line Interface (CLI), providing dedicated interactive environments for three distinct roles: Customer, Worker, and Owner.
 
 ## 🚀 Quick Start (One Step Startup)
