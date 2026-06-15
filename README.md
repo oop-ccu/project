@@ -23,7 +23,7 @@ cd smart-store && npm run dev
 
 This will:
 - ✅ Start API Server on `http://localhost:5000`
-- ✅ Start Web UI on `http://localhost:5174`
+- ✅ Start Web UI on `http://localhost:5173`
 - ✅ Data persists to JSON files
 - ✅ Ready for sign in with `victor@gmail.com` / `12345678`
 
