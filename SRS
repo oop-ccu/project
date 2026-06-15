@@ -1,146 +1,43 @@
-這是一份根據您提供的「智慧商店系統 (Smart Store System)」原始碼所撰寫的 **軟體需求規格書 (SRS)** 與 **軟體設計文件 (SDD)**。
+2.2 功能需求 (Functional Requirements)
+🔓 認證與安全
+店長認證：使用寫死的安全憑證（admin / admin）進行系統登入。
 
----
+員工認證：使用系統自動生成的唯一 Worker ID（例如：W001）作為登入憑證。
 
-# 智慧商店系統 (Smart Store System) 專案文件 #
+會員認證：使用註冊的電子郵件（Email）與密碼進行登入。
 
-## 第一部分：軟體需求規格書 (Software Requirements Specification, SRS)
+📊 店長整合儀表板 (Owner Dashboard)
+全店數據總覽：一鍵即時載入最新 JSON 數據，動態顯示：
 
-### 1. 簡介
+當前商店總資產餘額（💰 Balance）
 
-本文件定義了「智慧商店系統」的功能與非功能需求。該系統旨在提供實體或線上商店一套輕量級的整合管理解決方案，涵蓋會員管理、庫存管理、員工薪資、會計帳務以及結帳作業。
+總會員註冊人數（👥 Total Members）
 
-### 2. 使用者角色
+庫存商品種類總數（📦 Product Types）
 
-* **店長/老闆 (Owner)**：擁有最高權限，負責檢視商店整體營運狀況、發放薪資與檢視帳務明細。
-* **員工 (Worker)**：負責日常營運操作（如：打卡/回報工時、結帳、庫存管理）。
-* **顧客/會員 (Customer)**：商店的消費者，可註冊帳號、登入並維護個人資料。
+總雇傭員工數（⚙️ Total Workers）
 
-### 3. 功能需求 (Functional Requirements)
+流水帳務審計：可即時查詢歷史所有的收入（Revenue）、支出（Expense）及結帳收入（Checkout Revenue），並列出時間戳記與詳細備註。
 
-#### 3.1 店長功能 (Owner UI)
+智慧發薪自動化：發放薪資時，系統自動計算該員工的「淨薪資（Net Salary = 底薪 + 獎金 - 扣款）」，並引導會計系統自動記錄一筆支出，最後重置該員工當月的所有工時、獎金、扣款，同步回寫至 JSON。
 
-* **安全登入**：店長需透過預設帳號密碼 (`admin`/`admin`) 登入系統。
-* **全店總覽 (Dashboard)**：可一鍵檢視商店總餘額、總會員數、庫存商品總類數及員工總數。
-* **帳務管理**：
-* 檢視當前總營收與帳戶餘額。
-* 檢視歷史交易明細（包含收入與支出紀錄）。
+⏱️ 員工工時回報
+工時累加邏輯：員工登入後可隨時回報工作時數，新輸入的時數將自動「累加」至原工時中，而非直接覆蓋，確保工時統計之準確性。
 
+🛒 現代化收銀結帳 (Checkout System)
+動態購物車：支援透過 Item ID 掃描商品並輸入數量，若商品不存在或庫存不足，系統應立即阻斷並回報。
 
-* **薪資管理**：
-* 根據員工 ID 查詢薪資明細。
-* 結算並發放薪資，系統需自動將薪資發放記錄連動至會計系統（記為支出），並自動重置該員工的當月工時與獎懲紀錄。
+會員等級折扣連動：結帳時若帶入會員帳號，系統會向會員系統查詢其等級（Level），並自動套用對應的折價率（Discount Rate）計算最終付款額。
 
+交易原子性（連動扣庫存與記帳）：結帳成功後，系統需同時：
 
+通知庫存系統扣減對應商品數量。
 
-#### 3.2 員工功能 (Worker UI)
+通知會計系統寫入一筆 checkout revenue，並記錄完整的購買品項明細與購買會員 ID。
 
-* **員工登入**：員工需輸入專屬的 Worker ID 進行登入。
-* **薪資與個人資料**：檢視個人的底薪、工時、獎金、扣款及本月實發薪資。
-* **工時回報**：員工可自行輸入並更新工作時數。
-* *(待擴充功能)*：存取庫存管理模組與收銀結帳系統。
+2.3 非功能需求 (Non-Functional Requirements)
+即時數據一致性 (Data Consistency)：由於採用分立的 JSON 檔案儲存，任何 UI 在讀取餘額、歷史明細、員工資料或會員總數前，必須強制重新執行 _load_data() 或相關 Load 函式，防止多執行緒或跨介面操作時發生資料髒讀（Dirty Read）。
 
-#### 3.3 顧客/會員功能 (Customer UI)
+無資料庫依賴：全系統完全不依賴 MySQL、PostgreSQL 等外部資料庫服務，僅需 Python 內建環境即可開箱即用。
 
-* **會員註冊**：建立新會員檔案。
-* **會員登入**：透過 Email 與密碼登入。
-* **帳號維護**：檢視個人檔案、修改個人資訊與更改密碼。
-
-#### 3.4 結帳系統 (Checkout System)
-
-* **購物車管理**：支援掃描商品 ID 加入購物車，並根據數量檢查庫存是否充足。
-* **會員折扣**：結帳時可綁定會員 ID，系統需根據會員等級自動計算折扣。
-* **交易處理**：
-* 計算總金額並驗證付款金額是否足夠。
-* 結帳完成後，自動扣除商品庫存。
-* 自動將交易紀錄與營收匯入會計系統。
-
-
-
-#### 3.5 API 服務 (RESTful API)
-
-* 系統需提供基於 Flask 的 REST API，支援前端或外部系統進行以下資源的 CRUD (新增、讀取、更新、刪除) 操作：
-* `/api/members` (會員資料)
-* `/api/inventory` (庫存資料)
-* `/api/accounting/...` (帳務與交易紀錄)
-* `/api/salary` (員工薪資資料)
-
-
-
-### 4. 非功能需求 (Non-Functional Requirements)
-
-* **資料儲存**：採用輕量級的 JSON 檔案做為本地資料庫，確保系統無需額外安裝關聯式資料庫即可運行。
-* **使用者介面**：目前以終端機 (CLI) 文字介面為主，並透過清除螢幕指令 (`cls` 或 `clear`) 提供切換畫面的體驗。
-* **系統架構**：採模組化設計，各子系統獨立運作，並透過依賴注入或 API 進行系統間的溝通。
-
----
-
-## 第二部分：軟體設計文件 (Software Design Document, SDD)
-
-### 1. 系統架構設計
-
-本系統採用 **模組化 (Modular) 與微服務雛型架構**。系統分為純後端邏輯層、終端機前端介面層，以及一個負責外部對接的 Flask API 閘道器。
-
-#### 1.1 核心模組 (Core Modules)
-
-* `accounting_system.py`：會計模組，處理總餘額計算及交易明細的新增與讀取。
-* `salary_system.py`：薪資模組，包含 `Salary` 類別，負責工時更新、淨薪資計算 (底薪+獎金-扣款)。
-* `inventory_system.py`：庫存模組，包含 `item` 類別，管理商品名稱、數量與總值。
-* `member_system.py`：(參照程式碼推斷) 會員模組，處理會員認證與折扣邏輯。
-* `checkout_system.py`：結帳核心，負責協調庫存、會員與會計系統完成交易。
-
-#### 1.2 介面層 (UI Layer)
-
-* `owner_ui.py`：調用 `accounting`、`salary`、`member`、`inventory` 模組，作為店長的整合儀表板。
-* `worker_ui.py`：依賴 `salary_system`，提供員工自我管理的終端機介面。
-* `customer_ui.py`：依賴 `member_system`，提供顧客操作介面。
-
-#### 1.3 服務層 (API Layer)
-
-* `api.py`：使用 Flask 實作，將 JSON 資料庫的讀寫包裝成 HTTP 端點，支援跨來源資源共用 (CORS)。
-
-### 2. 資料庫設計 (Data Design)
-
-系統使用本地端 JSON 檔案儲存資料，以下為各檔案結構規劃：
-
-* **`accounting_data.json`**
-* `total_balance` (Float): 當前帳戶總餘額。
-* `transactions` (List): 交易明細陣列，包含 `transaction_id`, `type` (revenue/expense/checkout revenue), `amount`, `description`, `date`, `items`, `member_id`。
-
-
-* **`salary_data.json`**
-* 包含員工物件陣列：`worker_id`, `worker_name`, `worker_role`, `base_salary`, `hours_worked`, `bonus`, `deductions`。
-
-
-* **`inventory_data.json`**
-* 包含商品物件陣列：`id`/`name`, `quantity`/`stock`, `value`/`price`, `total_value`, `date`。
-
-
-* **`member_data.json`**
-* 包含會員物件陣列：`id`, `name`, `email`, `password`, `age`, `gender`, `level`, `total_spending`。
-
-
-
-### 3. 系統互動流程設計 (Sequence & Logic)
-
-#### 3.1 結帳處理流程 (Checkout Flow)
-
-結帳系統 (`CheckoutSystem`) 扮演 Facade (外觀模式) 的角色，隱藏了多系統互動的複雜性。
-
-1. **掃描商品**：`scan_item()` 呼叫 `inventory_system.get_item()` 驗證庫存，成功後加入 `cart`。
-2. **綁定會員**：`set_member()` 呼叫 `member_system.get_member()` 獲取會員資訊與折扣率。
-3. **計算金額**：`calculate_total()` 計算 `(商品單價 * 數量) * 會員折扣率`。
-4. **處理付款** (`process_payment`):
-* 通知 `inventory_system` 減少庫存 (`reduce_stock`)。
-* 封裝交易紀錄，傳送至 `accounting_system.add_transaction()`。
-* 清空購物車，回傳找零金額。
-
-
-
-#### 3.2 發放薪資流程 (Salary Payment Flow)
-
-1. 店長於 `owner_ui` 輸入 Worker ID 查詢員工 (`ss.check_salary_data`)。
-2. 呼叫 `worker.calculate_net_salary()` 取得應發放總額。
-3. 調用 `accounting.record_expense()` 將薪資紀錄為商店支出，會計系統自動更新餘額並儲存至 JSON。
-4. 重置該員工 `Salary` 物件內的 `hours_worked`, `bonus`, `deductions` 為 0。
-5. 呼叫 `ss.save_salaries()` 覆寫 `salary_data.json`，完成發放。
+介面相容性：CLI 介面相容於 Windows (cls) 與 Linux/MacOS (clear) 環境。
