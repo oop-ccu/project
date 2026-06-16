@@ -1,9 +1,9 @@
 
 
 ## 🚀 Quick Start
-## unzip smart-store.zip
 
-To start both the **API Server** and **Web UI** with a single command:
+
+First, unzip smart-store.zip and start both the **API Server** and **Web UI** with a single command:
 
 
 
