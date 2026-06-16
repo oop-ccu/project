@@ -1,73 +1,73 @@
-# 智慧商店系統 (Smart Store System) 專案文件
 
+# Smart Store System Project Document
 
-### 1. 簡介
+### 1. Introduction
 
-本文件定義了「智慧商店系統」的功能與非功能需求。該系統旨在提供實體或線上商店一套輕量級的整合管理解決方案，涵蓋會員管理、庫存管理、員工薪資、會計帳務以及結帳作業。
+This document defines the functional and non-functional requirements of the "Smart Store System." The system aims to provide a lightweight, integrated management solution for physical or online stores, covering member management, inventory management, employee salaries, accounting, and checkout operations.
 
-### 2. 使用者角色
+### 2. User Roles
 
-* **店長/老闆 (Owner)**：擁有最高權限，負責檢視商店整體營運狀況、發放薪資與檢視帳務明細。
-* **員工 (Worker)**：負責日常營運操作（如：打卡/回報工時、結帳、庫存管理）。
-* **顧客/會員 (Customer)**：商店的消費者，可註冊帳號、登入並維護個人資料。
-
-### 3. 功能需求 (Functional Requirements)
-
-#### 3.1 店長功能 (Owner UI)
-
-* **安全登入**：店長需透過預設帳號密碼 (`admin`/`admin`) 登入系統。
-* **全店總覽 (Dashboard)**：可一鍵檢視商店總餘額、總會員數、庫存商品總類數及員工總數。
-* **帳務管理**：
-* 檢視當前總營收與帳戶餘額。
-* 檢視歷史交易明細（包含收入與支出紀錄）。
-
-
-* **薪資管理**：
-* 根據員工 ID 查詢薪資明細。
-* 結算並發放薪資，系統需自動將薪資發放記錄連動至會計系統（記為支出），並自動重置該員工的當月工時與獎懲紀錄。
-
-
-
-#### 3.2 員工功能 (Worker UI)
-
-* **員工登入**：員工需輸入專屬的 Worker ID 進行登入。
-* **薪資與個人資料**：檢視個人的底薪、工時、獎金、扣款及本月實發薪資。
-* **工時回報**：員工可自行輸入並更新工作時數。
-* *(待擴充功能)*：存取庫存管理模組與收銀結帳系統。
-
-#### 3.3 顧客/會員功能 (Customer UI)
-
-* **會員註冊**：建立新會員檔案。
-* **會員登入**：透過 Email 與密碼登入。
-* **帳號維護**：檢視個人檔案、修改個人資訊與更改密碼。
-
-#### 3.4 結帳系統 (Checkout System)
-
-* **購物車管理**：支援掃描商品 ID 加入購物車，並根據數量檢查庫存是否充足。
-* **會員折扣**：結帳時可綁定會員 ID，系統需根據會員等級自動計算折扣。
-* **交易處理**：
-* 計算總金額並驗證付款金額是否足夠。
-* 結帳完成後，自動扣除商品庫存。
-* 自動將交易紀錄與營收匯入會計系統。
-
-
-
-#### 3.5 API 服務 (RESTful API)
-
-* 系統需提供基於 Flask 的 REST API，支援前端或外部系統進行以下資源的 CRUD (新增、讀取、更新、刪除) 操作：
-* `/api/members` (會員資料)
-* `/api/inventory` (庫存資料)
-* `/api/accounting/...` (帳務與交易紀錄)
-* `/api/salary` (員工薪資資料)
-
-
-
-### 4. 非功能需求 (Non-Functional Requirements)
-
-* **資料儲存**：採用輕量級的 JSON 檔案做為本地資料庫，確保系統無需額外安裝關聯式資料庫即可運行。
-* **使用者介面**：目前以終端機 (CLI) 文字介面為主，並透過清除螢幕指令 (`cls` 或 `clear`) 提供切換畫面的體驗。
-* **系統架構**：採模組化設計，各子系統獨立運作，並透過依賴注入或 API 進行系統間的溝通。
+* **Store Manager/Owner (Owner):** Possesses the highest permissions, responsible for viewing the overall operational status of the store, distributing salaries, and reviewing transaction details.
+* **Employee (Worker):** Responsible for daily operational tasks (e.g., clocking in/reporting hours, checkout, inventory management).
+* **Customer/Member (Customer):** The store's consumers, who can register accounts, log in, and maintain personal profiles.
 
 ---
 
+### 3. Functional Requirements
 
+#### 3.1 Owner Functions (Owner UI)
+
+* **Secure Login:** The manager must log into the system using default credentials (`admin`/`admin`).
+* **Store Overview (Dashboard):** Provides a one-click view of the store's total balance, total member count, total types of inventory items, and total employee count.
+* **Accounting Management:**
+* View the current total revenue and account balance.
+* View historical transaction details (including income and expense records).
+
+
+* **Salary Management:**
+* Query salary details based on the Worker ID.
+* Calculate and issue salaries; the system must automatically link salary payment records to the accounting system (recorded as an expense) and automatically reset the employee's monthly work hours and bonus/deduction records.
+
+
+
+#### 3.2 Employee Functions (Worker UI)
+
+* **Employee Login:** Employees must enter their unique Worker ID to log in.
+* **Salary & Personal Profile:** View individual base salary, hours worked, bonuses, deductions, and the net salary to be paid this month.
+* **Work Hour Reporting:** Employees can manually enter and update their work hours.
+* *(Future Expansion)*: Access inventory management modules and the cash register checkout system.
+
+#### 3.3 Customer/Member Functions (Customer UI)
+
+* **Member Registration:** Create a new member profile.
+* **Member Login:** Log in via Email and password.
+* **Account Maintenance:** View personal profile, update personal information, and change passwords.
+
+#### 3.4 Checkout System
+
+* **Shopping Cart Management:** Supports scanning Item IDs to add to the cart and checks if there is sufficient stock based on the quantity.
+* **Member Discounts:** Allows binding a Member ID during checkout; the system must automatically calculate discounts based on the member's tier.
+* **Transaction Processing:**
+* Calculate the total amount and verify if the payment amount is sufficient.
+* Automatically deduct product inventory upon checkout completion.
+* Automatically import transaction records and revenue into the accounting system.
+
+
+
+#### 3.5 API Services (RESTful API)
+
+* The system must provide a Flask-based REST API supporting CRUD (Create, Read, Update, Delete) operations by frontends or external systems for the following resources:
+* `/api/members` (Member data)
+* `/api/inventory` (Inventory data)
+* `/api/accounting/...` (Accounting and transaction records)
+* `/api/salary` (Employee salary data)
+
+
+
+---
+
+### 4. Non-Functional Requirements
+
+* **Data Storage:** Utilizes lightweight JSON files as the local database, ensuring the system can run without the need to install an additional relational database.
+* **User Interface:** Currently relies primarily on a text-based Command-Line Interface (CLI), providing a screen-switching experience through clear-screen commands (`cls` or `clear`).
+* **System Architecture:** Adopts a modular design where each subsystem operates independently, with inter-system communication handled via dependency injection or APIs.
