@@ -1,67 +1,73 @@
-### 1. 系統架構設計
+Here is the English translation of your system architecture document, formatted for readability:
 
-本系統採用 **模組化 (Modular) 與微服務雛型架構**。系統分為純後端邏輯層、終端機前端介面層，以及一個負責外部對接的 Flask API 閘道器。
+## 1. System Architecture Design
 
-#### 1.1 核心模組 (Core Modules)
+This system adopts a modular and prototype microservices architecture. The system is divided into a pure backend logic layer, a terminal-based frontend interface layer, and a Flask API gateway responsible for external connections.
 
-* `accounting_system.py`：會計模組，處理總餘額計算及交易明細的新增與讀取。
-* `salary_system.py`：薪資模組，包含 `Salary` 類別，負責工時更新、淨薪資計算 (底薪+獎金-扣款)。
-* `inventory_system.py`：庫存模組，包含 `item` 類別，管理商品名稱、數量與總值。
-* `member_system.py`：(參照程式碼推斷) 會員模組，處理會員認證與折扣邏輯。
-* `checkout_system.py`：結帳核心，負責協調庫存、會員與會計系統完成交易。
+### 1.1 Core Modules
 
-#### 1.2 介面層 (UI Layer)
+* **`accounting_system.py`**: Accounting module; handles total balance calculations, as well as adding and reading transaction records.
+* **`salary_system.py`**: Salary module; contains the `Salary` class, responsible for updating work hours and calculating net salary (base salary + bonus - deductions).
+* **`inventory_system.py`**: Inventory module; contains the `Item` class, managing product names, quantities, and total values.
+* **`member_system.py`**: Member module (inferred from code); handles member authentication and discount logic.
+* **`checkout_system.py`**: Checkout core; coordinates the inventory, member, and accounting systems to complete transactions.
 
-* `owner_ui.py`：調用 `accounting`、`salary`、`member`、`inventory` 模組，作為店長的整合儀表板。
-* `worker_ui.py`：依賴 `salary_system`，提供員工自我管理的終端機介面。
-* `customer_ui.py`：依賴 `member_system`，提供顧客操作介面。
+### 1.2 UI Layer
 
-#### 1.3 服務層 (API Layer)
+* **`owner_ui.py`**: Calls the accounting, salary, member, and inventory modules to serve as an integrated dashboard for the store manager.
+* **`worker_ui.py`**: Depends on `salary_system` to provide a terminal interface for employee self-management.
+* **`customer_ui.py`**: Depends on `member_system` to provide a customer operation interface.
 
-* `api.py`：使用 Flask 實作，將 JSON 資料庫的讀寫包裝成 HTTP 端點，支援跨來源資源共用 (CORS)。
+### 1.3 API Layer
 
-### 2. 資料庫設計 (Data Design)
+* **`api.py`**: Implemented using Flask, it wraps JSON database read/write operations into HTTP endpoints and supports Cross-Origin Resource Sharing (CORS).
 
-系統使用本地端 JSON 檔案儲存資料，以下為各檔案結構規劃：
+---
+
+## 2. Database Design
+
+The system uses local JSON files for data storage. The structural layout for each file is as follows:
 
 * **`accounting_data.json`**
-* `total_balance` (Float): 當前帳戶總餘額。
-* `transactions` (List): 交易明細陣列，包含 `transaction_id`, `type` (revenue/expense/checkout revenue), `amount`, `description`, `date`, `items`, `member_id`。
+* `total_balance` (Float): Current total account balance.
+* `transactions` (List): Array of transaction details, including `transaction_id`, `type` (revenue/expense/checkout revenue), `amount`, `description`, `date`, `items`, and `member_id`.
 
 
 * **`salary_data.json`**
-* 包含員工物件陣列：`worker_id`, `worker_name`, `worker_role`, `base_salary`, `hours_worked`, `bonus`, `deductions`。
+* Contains an array of employee objects: `worker_id`, `worker_name`, `worker_role`, `base_salary`, `hours_worked`, `bonus`, and `deductions`.
 
 
 * **`inventory_data.json`**
-* 包含商品物件陣列：`id`/`name`, `quantity`/`stock`, `value`/`price`, `total_value`, `date`。
+* Contains an array of product objects: `id`/`name`, `quantity`/`stock`, `value`/`price`, `total_value`, and `date`.
 
 
 * **`member_data.json`**
-* 包含會員物件陣列：`id`, `name`, `email`, `password`, `age`, `gender`, `level`, `total_spending`。
+* Contains an array of member objects: `id`, `name`, `email`, `password`, `age`, `gender`, `level`, and `total_spending`.
 
 
 
-### 3. 系統互動流程設計 (Sequence & Logic)
+---
 
-#### 3.1 結帳處理流程 (Checkout Flow)
+## 3. System Interaction Flow Design (Sequence & Logic)
 
-結帳系統 (`CheckoutSystem`) 扮演 Facade (外觀模式) 的角色，隱藏了多系統互動的複雜性。
+### 3.1 Checkout Flow
 
-1. **掃描商品**：`scan_item()` 呼叫 `inventory_system.get_item()` 驗證庫存，成功後加入 `cart`。
-2. **綁定會員**：`set_member()` 呼叫 `member_system.get_member()` 獲取會員資訊與折扣率。
-3. **計算金額**：`calculate_total()` 計算 `(商品單價 * 數量) * 會員折扣率`。
-4. **處理付款** (`process_payment`):
-* 通知 `inventory_system` 減少庫存 (`reduce_stock`)。
-* 封裝交易紀錄，傳送至 `accounting_system.add_transaction()`。
-* 清空購物車，回傳找零金額。
+The `CheckoutSystem` acts as a Facade (Facade Pattern), hiding the complexity of multi-system interactions.
+
+1. **Scan Item:** `scan_item()` calls `inventory_system.get_item()` to verify inventory availability; upon success, the item is added to the `cart`.
+2. **Bind Member:** `set_member()` calls `member_system.get_member()` to retrieve member information and the applicable discount rate.
+3. **Calculate Total:** `calculate_total()` calculates (`product unit price` * `quantity`) * `member discount rate`.
+4. **Process Payment (`process_payment`):**
+* Notifies `inventory_system` to decrease stock (`reduce_stock`).
+* Encapsulates the transaction record and sends it to `accounting_system.add_transaction()`.
+* Empties the shopping cart and returns the change amount.
 
 
 
-#### 3.2 發放薪資流程 (Salary Payment Flow)
+### 3.2 Salary Payment Flow
 
-1. 店長於 `owner_ui` 輸入 Worker ID 查詢員工 (`ss.check_salary_data`)。
-2. 呼叫 `worker.calculate_net_salary()` 取得應發放總額。
-3. 調用 `accounting.record_expense()` 將薪資紀錄為商店支出，會計系統自動更新餘額並儲存至 JSON。
-4. 重置該員工 `Salary` 物件內的 `hours_worked`, `bonus`, `deductions` 為 0。
-5. 呼叫 `ss.save_salaries()` 覆寫 `salary_data.json`，完成發放。
+1. The store manager enters the Worker ID in `owner_ui` to query the employee record (`ss.check_salary_data`).
+2. Calls `worker.calculate_net_salary()` to retrieve the total amount to be paid.
+3. Invokes `accounting.record_expense()` to log the salary as a store expense; the accounting system automatically updates the balance and saves it to the JSON file.
+4. Resets the `hours_worked`, `bonus`, and `deductions` attributes within that employee's `Salary` object to `0`.
+5. Calls `ss.save_salaries()` to overwrite `salary_data.json`, completing the payment process.
