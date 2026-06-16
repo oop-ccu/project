@@ -1,4 +1,3 @@
-Here is the English translation of your system architecture document, formatted for readability:
 
 ## 1. System Architecture Design
 
