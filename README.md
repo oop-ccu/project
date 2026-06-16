@@ -4,6 +4,8 @@
 
 To start both the **API Server** and **Web UI** with a single command:
 
+# unzip smart-store.zip
+
 ### Windows Users
 **Option 1 - Batch File (Easiest)**
 ```bash
