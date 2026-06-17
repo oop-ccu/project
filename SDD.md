@@ -1,5 +1,5 @@
 
-# Software Design Description (SDD) - Smart Store System
+# Software Design Description  - Smart Store System
 
 ## 1. Introduction
 
