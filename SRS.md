@@ -120,7 +120,7 @@ The Smart Store Platform is a standalone system utilizing a Python backend and a
 
 ---
 
-## 6. Appendix A: Analysis Models
+## 6. Appendix: Analysis Models
 
 ### 1) Context Diagram (Level 0)
 The **Smart Store Integration Platform** sits at the center, interacting with:
