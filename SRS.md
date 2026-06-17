@@ -134,12 +134,6 @@ The **Smart Store Integration Platform** sits at the center, interacting with:
 3.  **Calculate**: Apply discount logic.
 4.  **Finalize**: Update Inventory (-), Member Spending (+), and Accounting Ledger (+).
 
----
 
-## 7. Appendix B: Issues List
-
-1.  **Encryption**: Current JSON storage for passwords is plain text; SHA-256 or Bcrypt encryption is required for Phase 2.
-2.  **Concurrency**: Simultaneous checkouts on the same SKU need testing for race conditions.
-3.  **Deployment**: Decisions between local hosting (On-premises) vs. Cloud hosting (Heroku/AWS).
 
 
