@@ -7,7 +7,7 @@
 | Document Information | |
 | :--- | :--- |
 | **Title** | Software Requirements Specification for Smart Store Integration Platform |
-| **Date** | May 22nd, 2024 |
+| **Date** | June 16, 2024 |
 | **Status** | Draft |
 | **Version** | 1.0 |
 
