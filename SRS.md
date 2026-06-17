@@ -10,8 +10,7 @@
 | **Date** | May 22nd, 2024 |
 | **Status** | Draft |
 | **Version** | 1.0 |
-| **Prepared for** | Retail Management Team, Development Lead, Store Operations |
-| **Reference** | SRS_SSIP_V1.0_May_2024 |
+
 
 ---
 
