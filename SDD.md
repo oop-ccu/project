@@ -1,6 +1,3 @@
-Based on the source code and structure you provided, here is the complete **Software Design Description (SDD)** in English, following standard software engineering documentation templates.
-
----
 
 # Software Design Description (SDD) - Smart Store System
 
