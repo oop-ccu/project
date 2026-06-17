@@ -1,6 +1,4 @@
-This is a complete **Software Requirements Specification (SRS)** for the **Smart Store Integration Platform**, written in English and formatted strictly according to the standards of the **AI-Driven Job Matching Platform** documentation you provided.
 
----
 
 # Software Requirements Specification (SRS)
 ## Smart Store Integration Platform
