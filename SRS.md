@@ -1,73 +1,122 @@
-
-# Smart Store System Project Document
-
-### 1. Introduction
-
-This document defines the functional and non-functional requirements of the "Smart Store System." The system aims to provide a lightweight, integrated management solution for physical or online stores, covering member management, inventory management, employee salaries, accounting, and checkout operations.
-
-### 2. User Roles
-
-* **Store Manager/Owner (Owner):** Possesses the highest permissions, responsible for viewing the overall operational status of the store, distributing salaries, and reviewing transaction details.
-* **Employee (Worker):** Responsible for daily operational tasks (e.g., clocking in/reporting hours, checkout, inventory management).
-* **Customer/Member (Customer):** The store's consumers, who can register accounts, log in, and maintain personal profiles.
+Based on the source code and structure you provided, here is the complete **Software Design Description (SDD)** in English, following standard software engineering documentation templates.
 
 ---
 
-### 3. Functional Requirements
+# Software Design Description (SDD) - Smart Store System
 
-#### 3.1 Owner Functions (Owner UI)
+## 1. Introduction
 
-* **Secure Login:** The manager must log into the system using default credentials (`admin`/`admin`).
-* **Store Overview (Dashboard):** Provides a one-click view of the store's total balance, total member count, total types of inventory items, and total employee count.
-* **Accounting Management:**
-* View the current total revenue and account balance.
-* View historical transaction details (including income and expense records).
+### 1.1 Purpose
+The purpose of this document is to provide a comprehensive architectural and detailed design description of the **Smart Store System**. It serves as a blueprint for developers to understand the system modules, data structures, and interactions between the frontend, backend, and persistence layers.
 
-
-* **Salary Management:**
-* Query salary details based on the Worker ID.
-* Calculate and issue salaries; the system must automatically link salary payment records to the accounting system (recorded as an expense) and automatically reset the employee's monthly work hours and bonus/deduction records.
-
-
-
-#### 3.2 Employee Functions (Worker UI)
-
-* **Employee Login:** Employees must enter their unique Worker ID to log in.
-* **Salary & Personal Profile:** View individual base salary, hours worked, bonuses, deductions, and the net salary to be paid this month.
-* **Work Hour Reporting:** Employees can manually enter and update their work hours.
-* *(Future Expansion)*: Access inventory management modules and the cash register checkout system.
-
-#### 3.3 Customer/Member Functions (Customer UI)
-
-* **Member Registration:** Create a new member profile.
-* **Member Login:** Log in via Email and password.
-* **Account Maintenance:** View personal profile, update personal information, and change passwords.
-
-#### 3.4 Checkout System
-
-* **Shopping Cart Management:** Supports scanning Item IDs to add to the cart and checks if there is sufficient stock based on the quantity.
-* **Member Discounts:** Allows binding a Member ID during checkout; the system must automatically calculate discounts based on the member's tier.
-* **Transaction Processing:**
-* Calculate the total amount and verify if the payment amount is sufficient.
-* Automatically deduct product inventory upon checkout completion.
-* Automatically import transaction records and revenue into the accounting system.
-
-
-
-#### 3.5 API Services (RESTful API)
-
-* The system must provide a Flask-based REST API supporting CRUD (Create, Read, Update, Delete) operations by frontends or external systems for the following resources:
-* `/api/members` (Member data)
-* `/api/inventory` (Inventory data)
-* `/api/accounting/...` (Accounting and transaction records)
-* `/api/salary` (Employee salary data)
-
-
+### 1.2 System Scope
+The Smart Store System is an integrated retail management platform. It facilitates:
+*   **Membership Management**: Registration, profile updates, and tiered loyalty discounts.
+*   **Inventory Control**: Stock monitoring, product entry, and automatic stock reduction.
+*   **Accounting & Finance**: Revenue tracking, expense recording, and real-time balance calculation.
+*   **Human Resources**: Worker shift logging, salary calculation, and payroll integration.
+*   **Checkout System**: Point-of-Sale (POS) logic integrating members, inventory, and accounting.
 
 ---
 
-### 4. Non-Functional Requirements
+## 2. System Architecture
 
-* **Data Storage:** Utilizes lightweight JSON files as the local database, ensuring the system can run without the need to install an additional relational database.
-* **User Interface:** Currently relies primarily on a text-based Command-Line Interface (CLI), providing a screen-switching experience through clear-screen commands (`cls` or `clear`).
-* **System Architecture:** Adopts a modular design where each subsystem operates independently, with inter-system communication handled via dependency injection or APIs.
+### 2.1 Architectural Overview
+The system follows a **Modular Layered Architecture** with a decoupled frontend and backend.
+
+1.  **Presentation Layer**: 
+    *   **CLI UIs**: Python-based terminal interfaces for local management (`owner_ui`, `worker_ui`, `customer_ui`).
+    *   **Web UI**: A modern React-based dashboard for customers and staff.
+2.  **API Layer (Flask)**: `api.py` acts as the bridge, exposing RESTful endpoints for the web frontend to interact with the backend logic.
+3.  **Business Logic Layer**: Core Python modules (`member_system`, `inventory_system`, etc.) containing the "brain" of the store.
+4.  **Data Persistence Layer**: Lightweight JSON-based storage (`.json` files).
+
+### 2.2 Component Interaction
+The **Checkout System** serves as the central orchestrator. When a transaction occurs:
+*   It queries the **Member System** for discount rates.
+*   It updates the **Inventory System** to reduce stock levels.
+*   It logs the final amount into the **Accounting System**.
+
+---
+
+## 3. Detailed Module Design
+
+### 3.1 Member System (`member_system.py`)
+*   **Class**: `member`
+*   **Attributes**: `id`, `name`, `email`, `password`, `age`, `gender`, `level` (Bronze/Silver/Gold/VIP).
+*   **Responsibilities**: 
+    *   Authenticating users.
+    *   Managing loyalty points and total spending history.
+    *   Calculating tier-based discounts.
+
+### 3.2 Inventory System (`inventory_system.py`)
+*   **Class**: `item`
+*   **Attributes**: `id`, `name`, `quantity`, `price`, `category`, `date`.
+*   **Responsibilities**:
+    *   Tracking product stock levels.
+    *   Handling batch updates for item information.
+    *   Providing product data to the Checkout module.
+
+### 3.3 Accounting System (`accounting_system.py`)
+*   **Class**: `AccountingSystem`
+*   **Data Structure**: A ledger containing a `total_balance` and a list of `transactions`.
+*   **Responsibilities**:
+    *   `record_revenue()`: Adds positive cash flow.
+    *   `record_expense()`: Deducts costs (Rent, Salaries, etc.).
+    *   `add_transaction()`: Stores detailed purchase records including itemized lists.
+
+### 3.4 Salary System (`salary_system.py`)
+*   **Class**: `Salary`
+*   **Attributes**: `worker_id`, `base_salary`, `hours_worked`, `bonus`, `deductions`.
+*   **Responsibilities**:
+    *   Calculating net pay: `(Base + Bonus - Deductions)`.
+    *   Allowing workers to log hours.
+    *   Interfacing with Accounting to deduct payroll from the store balance.
+
+### 3.5 Checkout System (`checkout_system.py`)
+*   **Functionality**: Orchestrates the POS flow.
+*   **Logic Flow**:
+    1.  **Scan**: Verify item exists and check stock.
+    2.  **Identify**: Apply member discounts.
+    3.  **Execute**: atomicaly update Stock (-), Member Spending (+), and Accounting Ledger (+).
+
+---
+
+## 4. Data Design (Persistence)
+
+The system uses JSON files for persistence to ensure data survives application restarts.
+
+| File Name | Purpose | Key Fields |
+| :--- | :--- | :--- |
+| `member_data.json` | Member database | email, password, total_spending, level |
+| `inventory_data.json` | Product catalog | id, name, price, stock |
+| `accounting_data.json` | Financial ledger | total_balance, transaction_history |
+| `salary_data.json` | Employee payroll | worker_id, hours_worked, net_salary |
+
+---
+
+## 5. Interface Design
+
+### 5.1 User Roles
+1.  **Owner**: Access to the high-level dashboard, financial reports, and payroll management.
+2.  **Worker**: Access to inventory management, hour reporting, and checkout processing.
+3.  **Customer**: Access to product browsing, profile editing, and self-checkout.
+
+### 5.2 API Design (REST)
+*   `GET /api/members`: Fetch all member profiles.
+*   `POST /api/inventory`: Add new stock items.
+*   `POST /api/accounting/transactions`: Log a new revenue or expense entry.
+*   `PUT /api/salary/<worker_id>`: Update work hours or bonus.
+
+---
+
+## 6. System Integrity & Maintenance
+
+1.  **Data Synchronization**: Every module re-loads its JSON file before critical operations (Read-before-Write) to ensure multi-interface consistency.
+2.  **Error Handling**: Built-in validation for `ValueError` (invalid amounts) and `JSONDecodeError` (corrupted files).
+3.  **Initialization**: `database.py` ensures that all required JSON files exist upon system startup.
+
+---
+**Date:** May 2024  
+**Version:** 1.0.0  
+**Status:** Approved for Implementation
